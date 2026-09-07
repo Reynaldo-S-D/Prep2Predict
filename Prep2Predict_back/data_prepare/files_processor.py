@@ -9,6 +9,7 @@ from models.files_db_model import *
 async def save_file(file: UploadFile = File(...)):
     try:
         with db.conn.atomic():
+            db.conn.execute_sql("TRUNCATE TABLE Prep2Predict.properties, Prep2Predict.files;")
             Path("csv_data_analysis").mkdir(parents=True, exist_ok=True)
             path = Path("csv_data_analysis", str(file.filename))
             with open(path, "wb") as f:
